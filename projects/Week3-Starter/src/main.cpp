@@ -56,7 +56,7 @@ GLFWwindow* window;
 // The current size of our window in pixels
 glm::ivec2 windowSize = glm::ivec2(800, 800);
 // The title of our GLFW window
-std::string windowTitle = "INFR-1350U";
+std::string windowTitle = "INFR-1350U - 100804962";
 
 void GlfwWindowResizedCallback(GLFWwindow* window, int width, int height) { 
 	glViewport(0, 0, width, height);    
@@ -133,10 +133,10 @@ int main() {
 
 	static const float interleaved[] = {
 		//	  X		 Y		Z	   R	 G	  B
-			 0.5f, -0.5f, 0.5f,  0.0f, 0.0f, 0.0f,
-			 0.5f,  0.5f, 0.5f,  0.3f, 0.2f, 0.5f,
-			-0.5f,  0.5f, 0.5f,  1.0f, 1.0f, 0.0f,
-			-0.5f, -0.5f, 0.5f,  1.0f, 1.0f, 1.0f
+			 0.6f,  0.0f, 0.5f,  0.0f, 0.0f, 0.0f,
+			 0.6f,  0.5f, 0.5f,  0.3f, 0.2f, 0.5f,
+			 0.1f,  0.5f, 0.5f,  1.0f, 1.0f, 0.0f,
+			 0.1f,  0.0f, 0.5f,  1.0f, 1.0f, 1.0f
 	};
 	VertexBuffer* interleaved_vbo = new VertexBuffer();
 	interleaved_vbo->LoadData(interleaved, 6 * 4);
@@ -179,7 +179,7 @@ int main() {
 	shader->Link();
 
 	shader2->LoadShaderPartFromFile("shaders/vertex_shader.glsl", ShaderPartType::Vertex);
-	shader2->LoadShaderPartFromFile("shaders/frag_shader.glsl", ShaderPartType::Fragment);
+	shader2->LoadShaderPartFromFile("shaders/frag_shader2.glsl", ShaderPartType::Fragment);
 	shader2->Link();
 
 	// GL states
@@ -205,13 +205,18 @@ int main() {
 		vao->Bind(); 
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
+		shader2->Bind();
 		vao2->Bind();
-		glDrawElements(GL_TRIANGLES, (GLenum)interleaved_ibo->GetElementCount(), (GLenum)interleaved_ibo->GetElementType(), nullptr);
+		glDrawElements(
+			GL_TRIANGLES, 
+			(GLenum)interleaved_ibo->GetElementCount(), 
+			(GLenum)interleaved_ibo->GetElementType(), nullptr);
 		VertexArrayObject::Unbind();
 
 		glfwSwapBuffers(window);
 	}
 
+	delete shader2;
 	delete shader;
 	delete vao;
 	delete posVbo;
